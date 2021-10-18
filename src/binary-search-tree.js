@@ -68,17 +68,55 @@ module.exports = class BinarySearchTree {
   }
 
   remove(data) {
-    
+    this.rootNode = this.removeElem(this.rootNode, data);
+  }
+
+  removeElem(node, data) {
+    if (!node) return null;
+    if (data < node.data) {
+      node.left = this.removeElem(node.left, data);
+      return node;
+    } 
+    if (data > node.data) {
+      node.right = this.removeElem(node.right, data);
+      return node;
+    } 
+
+    if (data === node.data) {
+      if (!node.left && !node.right) return null;
+      if (!node.left) return node.right;
+      if (!node.right) return node.left;
+
+      if (node.left && node.right) {
+
+        let substitute = node.right;
+        while (substitute.left) {
+          substitute = substitute.left;
+        }
+        node.data = substitute.data;
+        node.right = this.removeElem(node.right, substitute.data);
+        return node;
+      }
+    }
+
   }
 
   min() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    if (!this.rootNode) return null;
+    let current = this.rootNode; 
+    while (current.left) {
+      current = current.left;
+    }
+    return current.data;
   }
 
   max() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    if (!this.rootNode) return null;
+    let current = this.rootNode; 
+    while (current.right) {
+      current = current.right;
+    }
+    return current.data;
   }
 
 }
